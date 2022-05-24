@@ -20,10 +20,14 @@ export class PostsService {
     return this.postsRepository.findAll()
   }
 
+  findOne(){
+    return this
+  }
+
   async update(id: number, updatePostDto: UpdatePostDto) {
     await this.postsRepository.update({
       ...updatePostDto
-    }, {where:{id:id}})
+    }, {where:{id}})
     const updated = await this.postsRepository.findByPk(id)
     return updated
   }

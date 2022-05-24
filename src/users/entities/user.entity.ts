@@ -28,4 +28,4 @@ export class User extends Model<User, UserCreationAttribute> {
 
   @HasMany(() => Post)
   posts: Post[];
-}
+} 

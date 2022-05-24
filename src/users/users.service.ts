@@ -10,18 +10,24 @@ export class UsersService {
     @Inject(USERS_REPOSITORY)
     private usersRepository: typeof User
   ){}
-  create(createUserDto: CreateUserDto) {
-    return this.usersRepository.create({...createUserDto})
+ async create(createUserDto: CreateUserDto) {
+    return await this.usersRepository.create({...createUserDto})
   }
 
   findAll() {
     return this.usersRepository.findAll()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({where: {email}, include: {all: true}})
+    return user;
+}
+
+  findOneById(id: number) {
+    return this.usersRepository.findOne({where:{id}})
   }
 
+  
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
