@@ -3,26 +3,33 @@ import { POSTS_REPOSITORY } from 'src/constants';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
+import {FilesService} from "../files/files.sercice";
 
 @Injectable()
 export class PostsService {
   constructor(@Inject(POSTS_REPOSITORY)
-  private postsRepository: typeof Post
+  private postsRepository: typeof Post,
+  private fileService: FilesService
   ){}
-  create(createPostDto: CreatePostDto) {
-    return this.postsRepository.create({...createPostDto})
-  }
+  async create(createPostDto: CreatePostDto, image:any) {
+    const fileName = await this.fileService.createFile(image)
+    return await this.postsRepository.create({...createPostDto, image:fileName})
+  } 
 
   findAll() {
     return this.postsRepository.findAll()
   }
 
-
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: number, updatePostDto: UpdatePostDto) {
+    await this.postsRepository.update({
+      ...updatePostDto
+    }, {where:{id:id}})
+    const updated = await this.postsRepository.findByPk(id)
+    return updated
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: number) {
+    await this.postsRepository.destroy({where:{id:id}})
+    return `Post with ${id} has been deleted`
   }
 }
