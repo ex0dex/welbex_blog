@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 
 @Controller('users')
@@ -10,8 +10,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Create User' })
-  @ApiResponse({ status: 200, type: User })
-  @Post()
+  @ApiOkResponse({status:201, type:User})
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }

@@ -9,7 +9,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 export class PostsController {
   constructor(private readonly postsService: PostsService) { }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   create(@Body() createPostDto: CreatePostDto, @UploadedFile() image) {
